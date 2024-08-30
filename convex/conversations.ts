@@ -18,9 +18,14 @@ export const openConversation = mutation({
 export const closeConversation = mutation({
   args: { id: v.id("conversations") },
   handler: async (ctx, args) => {
-    //delete convo from table
-    await ctx.db.delete(args.id);
-    console.log("deleted");
+    const conversationCount = await ctx.db.query("conversations").take(5);
+    if (conversationCount.length === 5) {
+      //delete convo from table
+      await ctx.db.delete(args.id);
+      console.log("deleted");
+    } else {
+      console.log("not enough conversations to delete");
+    }
   },
 });
 
@@ -66,17 +71,23 @@ export const getConversations = query({
 // });
 
 export const joinRandomConversation = mutation({
-  handler: async (ctx, args) => {
+  handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
 
     if (identity === null) {
       throw new Error("Not authenticated");
     }
 
-    console.log("joining conversation");
-    await ctx.db.insert("users", {
-      userId: identity.tokenIdentifier,
-      conversationId: args.conversationId,
-    });
+    //get all getConversations
+    console.log("getting conversations");
+    const conversations = await ctx.db.query("conversations").take(100);
+
+    if (conversations.length === 0) {
+      return null;
+    }
+    //random index
+    const randomIndex = Math.floor(Math.random() * conversations.length);
+    console.log(conversations);
+    return conversations[randomIndex]._id;
   },
 });

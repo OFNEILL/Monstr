@@ -10,6 +10,9 @@ export default function Home() {
   const closeConversation = useMutation(api.conversations.closeConversation);
   const joinConversation = useMutation(api.conversations.joinConversation);
   const getConversations = useQuery(api.conversations.getConversations);
+  const joinRandomConversation = useMutation(
+    api.conversations.joinRandomConversation,
+  );
 
   const sendMessage = useMutation(api.messages.sendMessage);
   const getMessages = useQuery(api.messages.getMessages, {
@@ -93,6 +96,22 @@ export default function Home() {
           </div>
         ))}
       </div>
+      <button
+        onClick={() => {
+          joinRandomConversation.call({}).then((id: any) => {
+            // setConversationId(id);
+            if (id === null) {
+              openConversation.call({}).then((id2: any) => {
+                setConversationId(id2);
+              });
+            } else {
+              setConversationId(id);
+            }
+          });
+        }}
+      >
+        Join random Conversation
+      </button>
     </div>
   );
 }
