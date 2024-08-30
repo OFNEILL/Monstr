@@ -1,8 +1,8 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
-export const sendMessage = mutation({
-  args: { conversationId: v.string(), message: v.string(), userId: v.string() },
+export const registerAccount = mutation({
+  args: { username: v.string(), : v.string(), userId: v.string() },
   handler: async (ctx, args) => {
     //send message
     console.log("sending message");
@@ -35,3 +35,4 @@ export const getMessages = query({
     return messages;
   },
 });
+

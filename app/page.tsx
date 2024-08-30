@@ -52,7 +52,7 @@ export default function Home() {
               {
                 conversationId: conversationId!,
                 message: e.target[0].value,
-                ai: false,
+                userId: "test",
               },
             );
             e.target[0].value = "";
