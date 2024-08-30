@@ -5,6 +5,7 @@ import { ConvexClientProvider } from "./ConvexClientProvider";
 import {
   ClerkProvider,
   SignInButton,
+  SignUpButton,
   SignedIn,
   SignedOut,
   UserButton,
@@ -28,6 +29,8 @@ export default function RootLayout({
         <body className={inter.className}>
           <SignedOut>
             <SignInButton />
+            &nbsp;or&nbsp;
+            <SignUpButton />
           </SignedOut>
           <SignedIn>
             <UserButton />
