@@ -8,6 +8,7 @@ export default function Home() {
   const [conversationId, setConversationId] = useState();
   const openConversation = useMutation(api.conversations.openConversation);
   const closeConversation = useMutation(api.conversations.closeConversation);
+  const joinConversation = useMutation(api.conversations.joinConversation);
 
   const sendMessage = useMutation(api.messages.sendMessage);
   const getMessages = useQuery(api.messages.getMessages, {
@@ -52,7 +53,7 @@ export default function Home() {
               {
                 conversationId: conversationId!,
                 message: e.target[0].value,
-                userId: "test",
+                userId: "",
               },
             );
             e.target[0].value = "";
@@ -60,7 +61,24 @@ export default function Home() {
         >
           <input type="text" className="max-w-40 align-bottom text-black" />
         </form>
-      ) : null}
+      ) : (
+        <form
+          onSubmit={(e: any) => {
+            e.preventDefault();
+            console.log(e.target[0].value);
+            joinConversation.call(
+              {},
+              {
+                conversationId: e.target[0].value!,
+              },
+            );
+            setConversationId(e.target[0].value);
+            e.target[0].value = "";
+          }}
+        >
+          <input type="text" className="max-w-40 align-bottom text-black" />
+        </form>
+      )}
     </div>
   );
 }
