@@ -23,3 +23,4 @@ export const closeConversation = query({
     console.log("deleted");
   },
 });
+// https://festive-sturgeon-235.convex.cloud
