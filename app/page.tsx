@@ -18,12 +18,17 @@ export default function Home() {
           });
         }}
       />
-      <button
-        className="bg-red-500 border border-red-500 px-4 py-4"
-        onClick={() => {
-          closeConversation.call({}, { id: conversationId! });
-        }}
-      />
+      <span>{conversationId}</span>
+      {conversationId !== undefined ? (
+        <button
+          className="bg-red-500 border border-red-500 px-4 py-4"
+          onClick={() => {
+            closeConversation.call({}, { id: conversationId! }).then(() => {
+              setConversationId(undefined);
+            });
+          }}
+        />
+      ) : null}
     </div>
   );
 }
