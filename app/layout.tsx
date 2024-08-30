@@ -28,9 +28,9 @@ export default function RootLayout({
       <html lang="en">
         <body className={inter.className}>
           <SignedOut>
-            <SignInButton />
+            <SignInButton mode="modal" />
             &nbsp;or&nbsp;
-            <SignUpButton />
+            <SignUpButton mode="modal" />
           </SignedOut>
           <SignedIn>
             <UserButton />
