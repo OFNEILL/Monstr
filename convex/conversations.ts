@@ -24,4 +24,3 @@ export const closeConversation = mutation({
     console.log("deleted");
   },
 });
-// https://festive-sturgeon-235.convex.cloud
