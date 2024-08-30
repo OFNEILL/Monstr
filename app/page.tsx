@@ -9,6 +9,7 @@ export default function Home() {
   const openConversation = useMutation(api.conversations.openConversation);
   const closeConversation = useMutation(api.conversations.closeConversation);
   const joinConversation = useMutation(api.conversations.joinConversation);
+  const getConversations = useQuery(api.conversations.getConversations);
 
   const sendMessage = useMutation(api.messages.sendMessage);
   const getMessages = useQuery(api.messages.getMessages, {
@@ -79,6 +80,19 @@ export default function Home() {
           <input type="text" className="max-w-40 align-bottom text-black" />
         </form>
       )}
+      <div className="flex flex-col">
+        {getConversations?.map(({ _id }) => (
+          <div
+            key={_id}
+            className="text-white text-sm cursor-pointer hover:text-gray-400"
+            onClick={() => {
+              setConversationId(_id);
+            }}
+          >
+            {_id}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
