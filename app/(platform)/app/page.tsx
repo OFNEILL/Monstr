@@ -6,18 +6,21 @@ import { useMutation, useQuery } from "convex/react";
 import { MessageCircleMoreIcon, SquarePenIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { Fragment, useRef, useState, useEffect } from "react";
+import { Fragment, useRef, useState, useEffect, useCallback } from "react";
 
 export default function Home() {
   const [conversationId, setConversationId] = useState();
   const messageInputRef = useRef<HTMLTextAreaElement>(null);
   const messageFormRef = useRef<HTMLFormElement>(null);
   const scrollRef = useRef<HTMLSpanElement>(null);
+  const [userImages, setUserImages] = useState({} as Record<string, string>);
+  const [loadingImages, setLoadingImages] = useState(
+    {} as Record<string, boolean>,
+  );
   const openConversation = useMutation(api.conversations.openConversation);
   const closeConversation = useMutation(api.conversations.closeConversation);
   const joinConversation = useMutation(api.conversations.joinConversation);
   const getConversations = useQuery(api.conversations.getConversations);
-
   const sendMessage = useMutation(api.messages.sendMessage);
   const getMessages = useQuery(api.messages.getMessages, {
     conversationId: conversationId!,
@@ -27,6 +30,26 @@ export default function Home() {
   // });
 
   const { user } = useUser();
+  const getUser = useCallback(
+    async (userId: string) => {
+      if (loadingImages[userId] || userImages[userId]) return;
+
+      setLoadingImages((prev) => ({ ...prev, [userId]: true }));
+      try {
+        const response = await fetch(`/api/getUser?userId=${userId}`);
+        if (!response.ok) {
+          throw new Error("Failed to fetch user");
+        }
+        const userData = await response.json();
+        setUserImages((prev) => ({ ...prev, [userId]: userData.imageUrl }));
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      } finally {
+        setLoadingImages((prev) => ({ ...prev, [userId]: false }));
+      }
+    },
+    [loadingImages, userImages],
+  );
   const autoHeight = () => {
     const text = messageInputRef.current as HTMLElement;
     text.style.height = "18px";
@@ -62,7 +85,18 @@ export default function Home() {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [getMessages]);
-
+  useEffect(() => {
+    if (getMessages) {
+      const uniqueUserIds = new Set(
+        getMessages.map(({ userId }) => userId.split("|")[1]),
+      );
+      uniqueUserIds.forEach((cleanUserId) => {
+        if (!userImages[cleanUserId] && !loadingImages[cleanUserId]) {
+          getUser(cleanUserId);
+        }
+      });
+    }
+  }, [getMessages, getUser, userImages, loadingImages]);
   return (
     <div className="flex w-full flex-col">
       <span className="flex items-center justify-between border-b border-b-zinc-900 px-4 py-3.5">
@@ -200,27 +234,49 @@ export default function Home() {
                       })}
                     </div>
                   ) : (
-                    <div className="bg-zinc-600 rounded-md w-fit mr-auto p-1.5 text-sm max-w-xl text-wrap">
-                      {message.split(" ").map((word: string) => {
-                        if (word.startsWith("http") || word.startsWith("www")) {
-                          return (
-                            <Link
-                              key={word}
-                              href={
-                                word.startsWith("www")
-                                  ? `https://${word}`
-                                  : word
-                              }
-                              target="_blank"
-                              rel="noreferrer"
-                              className="font-semibold"
-                            >
-                              {word}
-                            </Link>
-                          );
-                        }
-                        return word + " ";
-                      })}
+                    <div className="mr-auto flex items-center gap-2">
+                      <span className="aspect-square h-6 w-6 overflow-hidden rounded-full">
+                        {loadingImages[userId.split("|")[1]] ? (
+                          <div className="h-full w-full bg-zinc-700 animate-pulse"></div>
+                        ) : (
+                          <Image
+                            src={
+                              userImages[userId.split("|")[1]] ||
+                              "/avatars/no-avatar.jpg"
+                            }
+                            alt="User Avatar"
+                            width={0}
+                            height={0}
+                            sizes="100vw"
+                            className="h-full w-full object-cover"
+                          />
+                        )}
+                      </span>
+                      <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm max-w-xl text-wrap">
+                        {message.split(" ").map((word: string) => {
+                          if (
+                            word.startsWith("http") ||
+                            word.startsWith("www")
+                          ) {
+                            return (
+                              <Link
+                                key={word}
+                                href={
+                                  word.startsWith("www")
+                                    ? `https://${word}`
+                                    : word
+                                }
+                                target="_blank"
+                                rel="noreferrer"
+                                className="font-semibold"
+                              >
+                                {word}
+                              </Link>
+                            );
+                          }
+                          return word + " ";
+                        })}
+                      </div>
                     </div>
                   )}
                 </Fragment>
