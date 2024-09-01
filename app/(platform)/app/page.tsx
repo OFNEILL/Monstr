@@ -5,6 +5,7 @@ import { useUser } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
 import { MessageCircleMoreIcon, SquarePenIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { Fragment, useRef, useState, useEffect } from "react";
 
 export default function Home() {
@@ -176,12 +177,42 @@ export default function Home() {
               {getMessages?.map(({ _creationTime, message, _id, userId }) => (
                 <Fragment key={_id}>
                   {userId.split("|")[1] === user?.id ? (
-                    <div className="bg-blue-600 rounded-md w-fit flex ml-auto p-1.5 text-sm max-w-xl text-wrap">
-                      {message}
+                    <div className="bg-blue-600 rounded-md w-fit ml-auto p-1.5 text-sm max-w-xl text-wrap">
+                      {message.split(" ").map((word: string) => {
+                        if (word.startsWith("http") || word.startsWith("www")) {
+                          return (
+                            <Link
+                              key={word}
+                              href={word}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="font-semibold"
+                            >
+                              {word}
+                            </Link>
+                          );
+                        }
+                        return word + " ";
+                      })}
                     </div>
                   ) : (
-                    <div className="bg-zinc-600 rounded-md w-fit flex mr-auto p-1.5 text-sm max-w-xl text-wrap">
-                      {message}
+                    <div className="bg-zinc-600 rounded-md w-fit mr-auto p-1.5 text-sm max-w-xl text-wrap">
+                      {message.split(" ").map((word: string) => {
+                        if (word.startsWith("http") || word.startsWith("www")) {
+                          return (
+                            <Link
+                              key={word}
+                              href={word}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="font-semibold"
+                            >
+                              {word}
+                            </Link>
+                          );
+                        }
+                        return word + " ";
+                      })}
                     </div>
                   )}
                 </Fragment>
