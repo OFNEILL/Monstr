@@ -116,7 +116,7 @@ export default function Home() {
         </span>
       </span>
       <div className="flex h-[calc(100%-60px)]">
-        <div className="flex flex-col gap-4 h-full border-r border-r-zinc-900 p-2 overflow-y-auto overflow-x-hidden">
+        <div className="flex flex-col gap-4 h-full border-r border-r-zinc-900 p-2 pt-0 overflow-y-auto overflow-x-hidden">
           <span className="px-2 sticky pt-4 pb-2 top-0 bg-black flex flex-col gap-4">
             <span>
               <h2 className="font-semibold">Inbox</h2>
