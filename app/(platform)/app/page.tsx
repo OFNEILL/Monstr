@@ -176,11 +176,11 @@ export default function Home() {
               {getMessages?.map(({ _creationTime, message, _id, userId }) => (
                 <Fragment key={_id}>
                   {userId.split("|")[1] === user?.id ? (
-                    <div className="bg-blue-600 rounded-md w-fit flex ml-auto p-1.5 text-sm">
+                    <div className="bg-blue-600 rounded-md w-fit flex ml-auto p-1.5 text-sm max-w-xl text-wrap">
                       {message}
                     </div>
                   ) : (
-                    <div className="bg-zinc-600 rounded-md w-fit flex mr-auto p-1.5 text-sm">
+                    <div className="bg-zinc-600 rounded-md w-fit flex mr-auto p-1.5 text-sm max-w-xl text-wrap">
                       {message}
                     </div>
                   )}
