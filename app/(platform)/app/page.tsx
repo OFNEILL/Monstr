@@ -183,7 +183,11 @@ export default function Home() {
                           return (
                             <Link
                               key={word}
-                              href={word}
+                              href={
+                                word.startsWith("www")
+                                  ? `https://${word}`
+                                  : word
+                              }
                               target="_blank"
                               rel="noreferrer"
                               className="font-semibold"
@@ -202,7 +206,11 @@ export default function Home() {
                           return (
                             <Link
                               key={word}
-                              href={word}
+                              href={
+                                word.startsWith("www")
+                                  ? `https://${word}`
+                                  : word
+                              }
                               target="_blank"
                               rel="noreferrer"
                               className="font-semibold"
