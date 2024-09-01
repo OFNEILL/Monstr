@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import "./globals.css";
-import { ConvexClientProvider } from "./ConvexClientProvider";
+import "@/app/globals.css";
+import { ConvexClientProvider } from "@/app/ConvexClientProvider";
 import {
   ClerkProvider,
   SignInButton,
