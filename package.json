@@ -12,13 +12,16 @@
     "@clerk/nextjs": "^5.3.7",
     "@faker-js/faker": "^8.4.1",
     "clerk": "^0.8.3",
+    "clsx": "^2.1.1",
     "convex": "^1.15.0",
+    "framer-motion": "^11.3.31",
     "lucide-react": "^0.437.0",
     "next": "14.2.7",
     "nuqs": "^1.18.0",
     "react": "^18",
     "react-dom": "^18",
-    "smile2emoji": "^3.14.0"
+    "smile2emoji": "^3.14.0",
+    "tailwind-merge": "^2.5.2"
   },
   "devDependencies": {
     "@types/node": "^20",
