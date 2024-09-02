@@ -6,7 +6,7 @@ export const sendMessage = mutation({
     conversationId: v.string(),
     message: v.string(),
     userId: v.string(),
-    messageId: v.id("messages"),
+    messageId: v.optional(v.id("messages")),
   },
   handler: async (ctx, args) => {
     const identity = await ctx.auth.getUserIdentity();
