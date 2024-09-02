@@ -1,6 +1,6 @@
 "use client";
 
-import { RedirectToSignUp, useAuth } from "@clerk/nextjs";
+import { RedirectToSignIn, RedirectToSignUp, useAuth } from "@clerk/nextjs";
 import {
   Authenticated,
   ConvexProvider,
@@ -20,7 +20,7 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
     <ConvexProviderWithClerk client={convex} useAuth={useAuth}>
       <Authenticated>{children}</Authenticated>
       <Unauthenticated>
-        <RedirectToSignUp />
+        <RedirectToSignIn />
       </Unauthenticated>
     </ConvexProviderWithClerk>
   );
