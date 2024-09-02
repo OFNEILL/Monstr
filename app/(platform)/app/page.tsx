@@ -3,13 +3,21 @@
 import { api } from "@/convex/_generated/api";
 import { useUser } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
-import { MessageCircleMoreIcon, SquarePenIcon } from "lucide-react";
+import {
+  DeleteIcon,
+  MessageCircleMoreIcon,
+  ReplyIcon,
+  SquarePenIcon,
+  Trash2Icon,
+  XIcon,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { Fragment, useRef, useState, useEffect, useCallback } from "react";
 
 export default function Home() {
   const [conversationId, setConversationId] = useState();
+  const [replyingTo, setReplyingTo] = useState();
   const messageInputRef = useRef<HTMLTextAreaElement>(null);
   const messageFormRef = useRef<HTMLFormElement>(null);
   const scrollRef = useRef<HTMLSpanElement>(null);
@@ -28,6 +36,7 @@ export default function Home() {
   const getConversationPreviews = useQuery(
     api.conversations.getConversationPreviews,
   );
+  const deleteMessage = useMutation(api.messages.deleteMessage);
   const { user } = useUser();
   const getUser = useCallback(
     async (userId: string) => {
@@ -69,6 +78,7 @@ export default function Home() {
 
     sendMessage({
       conversationId: conversationId!,
+      messageId: replyingTo,
       message: message.value,
       userId: user?.id ?? "",
     });
@@ -77,6 +87,7 @@ export default function Home() {
     if (textarea) {
       textarea.style.height = "32px"; // or whatever the initial height should be
     }
+    setReplyingTo(undefined);
   };
   useEffect(() => {
     // Scroll to the bottom whenever getMessages changes
@@ -234,49 +245,90 @@ export default function Home() {
               className="flex flex-grow flex-col w-full p-2.5 gap-2 overflow-x-hidden overflow-y-auto"
               ref={scrollRef}
             >
-              {getMessages?.map(({ _creationTime, message, _id, userId }) => (
+              {getMessages?.map(({ message, _id, userId, messageId }) => (
                 <Fragment key={_id}>
                   {userId.split("|")[1] === user?.id ? (
-                    <div className="bg-blue-600 rounded-md w-fit ml-auto p-1.5 text-sm max-w-xl text-wrap">
-                      {message.split(" ").map((word: string, index: number) => {
-                        const isLastWord =
-                          index === message.split(" ").length - 1;
-                        const isLink =
-                          word.startsWith("http") ||
-                          word.startsWith("www") ||
-                          word.endsWith(".com");
-
-                        if (isLink) {
-                          return (
-                            <Fragment key={index}>
-                              <Link
-                                href={
-                                  word.startsWith("www") ||
-                                  word.endsWith(".com")
-                                    ? `https://${word}`
-                                    : word
-                                }
-                                target="_blank"
-                                rel="noreferrer"
-                                className="font-semibold"
+                    <div className="flex flex-col items-end w-fit ml-auto gap-2">
+                      {messageId && (
+                        <span className="flex gap-2">
+                          {(() => {
+                            const message = getMessages?.find(
+                              ({ _id }) => _id === messageId,
+                            )?.message;
+                            return (
+                              <div
+                                className={`flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm max-w-xl opacity-75 ${message ? "text-muted-foreground" : "text-zinc-500/80 italic"}`}
                               >
-                                {word}
-                              </Link>
-                              {!isLastWord && " "}
-                            </Fragment>
-                          );
-                        }
+                                {message || "Message has been deleted"}
+                              </div>
+                            );
+                          })()}
+                          <span className="w-1 h-full rounded-md bg-[#d3f806]" />
+                        </span>
+                      )}
+                      <div className="group flex flex-row-reverse items-center gap-2 w-fit">
+                        <div className="bg-blue-600 rounded-md w-fit p-1.5 text-sm max-w-xl text-wrap">
+                          {message
+                            .split(" ")
+                            .map((word: string, index: number) => {
+                              const isLastWord =
+                                index === message.split(" ").length - 1;
+                              const isLink =
+                                word.startsWith("http") ||
+                                word.startsWith("www") ||
+                                word.endsWith(".com");
 
-                        return (
-                          <Fragment key={index}>
-                            {word}
-                            {!isLastWord && " "}
-                          </Fragment>
-                        );
-                      })}
+                              if (isLink) {
+                                return (
+                                  <Fragment key={index}>
+                                    <Link
+                                      href={
+                                        word.startsWith("www") ||
+                                        word.endsWith(".com")
+                                          ? `https://${word}`
+                                          : word
+                                      }
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="font-semibold"
+                                    >
+                                      {word}
+                                    </Link>
+                                    {!isLastWord && " "}
+                                  </Fragment>
+                                );
+                              }
+
+                              return (
+                                <Fragment key={index}>
+                                  {word}
+                                  {!isLastWord && " "}
+                                </Fragment>
+                              );
+                            })}
+                        </div>
+                        <span className="flex gap-2 group-hover:opacity-100 transition-opacity duration-100 opacity-0">
+                          <ReplyIcon
+                            size={16}
+                            strokeWidth={1.5}
+                            className="text-zinc-400 cursor-pointer"
+                            onClick={() => {
+                              setReplyingTo(_id);
+                            }}
+                          />
+                          <Trash2Icon
+                            size={16}
+                            strokeWidth={1.5}
+                            className="text-red-600 cursor-pointer"
+                            onClick={() => {
+                              deleteMessage.call({}, { messageId: _id });
+                            }}
+                          />
+                        </span>
+                      </div>
                     </div>
                   ) : (
-                    <div className="mr-auto flex items-center gap-2">
+                    <div className="mr-auto flex items-center gap-2 group w-fit">
                       <span className="aspect-square h-6 w-6 overflow-hidden rounded-full">
                         {loadingImages[userId.split("|")[1]] ? (
                           <div className="h-full w-full bg-zinc-700 animate-pulse"></div>
@@ -334,23 +386,60 @@ export default function Home() {
                             );
                           })}
                       </div>
+                      <span className="flex gap-2 group-hover:opacity-100 transition-opacity duration-100 opacity-0">
+                        <ReplyIcon
+                          size={16}
+                          strokeWidth={1.5}
+                          className="text-zinc-400 cursor-pointer"
+                          onClick={() => {
+                            setReplyingTo(_id);
+                          }}
+                        />
+                      </span>
                     </div>
                   )}
                 </Fragment>
               ))}
             </span>
-            <form
-              onSubmit={handleFormSubmit}
-              className="p-2"
-              ref={messageFormRef}
-            >
-              <textarea
-                ref={messageInputRef}
-                className="w-full rounded-md text-sm px-2 py-1.5 border border-zinc-900 bg-zinc-900 bg-opacity-60 h-8 resize-none overflow-hidden"
-                onChange={autoHeight}
-                onKeyDown={handleKeyDown}
-                placeholder="Send a message..."
-              />
+            <form onSubmit={handleFormSubmit} ref={messageFormRef}>
+              {replyingTo && (
+                <div className="flex items-center gap-2 p-2 border-t border-t-zinc-900 justify-between">
+                  <span className="flex gap-2 items-center">
+                    <span className="text-muted-foreground text-sm">
+                      Replying to:
+                    </span>
+                    <span className="bg-zinc-900 bg-opacity-60 rounded-md p-1.5 text-sm max-w-xl">
+                      {
+                        getMessages?.find(({ _id }) => _id === replyingTo)
+                          ?.message
+                      }
+                    </span>
+                  </span>
+                  <span
+                    className="cursor-pointer text-red-600 text-sm"
+                    onClick={() => {
+                      setReplyingTo(undefined);
+                    }}
+                  >
+                    <XIcon
+                      size={16}
+                      strokeWidth={1.5}
+                      onClick={() => {
+                        setReplyingTo(undefined);
+                      }}
+                    />
+                  </span>
+                </div>
+              )}
+              <span className="p-2 w-full flex">
+                <textarea
+                  ref={messageInputRef}
+                  className="w-full rounded-md text-sm px-2 py-1.5 border border-zinc-900 bg-zinc-900 bg-opacity-60 h-8 resize-none overflow-hidden"
+                  onChange={autoHeight}
+                  onKeyDown={handleKeyDown}
+                  placeholder="Send a message..."
+                />
+              </span>
             </form>
           </div>
         ) : (
