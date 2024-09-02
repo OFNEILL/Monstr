@@ -28,14 +28,6 @@ export default function RootLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={inter.className}>
-          <SignedOut>
-            <SignInButton mode="modal" />
-            &nbsp;or&nbsp;
-            <SignUpButton mode="modal" />
-          </SignedOut>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
           <ConvexClientProvider>{children}</ConvexClientProvider>
         </body>
       </html>
