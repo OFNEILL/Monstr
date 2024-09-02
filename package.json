@@ -15,6 +15,7 @@
     "convex": "^1.15.0",
     "lucide-react": "^0.437.0",
     "next": "14.2.7",
+    "nuqs": "^1.18.0",
     "react": "^18",
     "react-dom": "^18",
     "smile2emoji": "^3.14.0"

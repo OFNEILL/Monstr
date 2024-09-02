@@ -13,6 +13,8 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
+import { useQueryState } from "nuqs";
 import { Fragment, useRef, useState, useEffect, useCallback } from "react";
 
 export default function Home() {
@@ -38,6 +40,7 @@ export default function Home() {
   );
   const deleteMessage = useMutation(api.messages.deleteMessage);
   const { user } = useUser();
+  const [room, setRoom] = useQueryState("room");
   const getUser = useCallback(
     async (userId: string) => {
       if (loadingImages[userId] || userImages[userId]) return;
@@ -97,7 +100,8 @@ export default function Home() {
   }, [getMessages]);
   useEffect(() => {
     setReplyingTo(undefined);
-  }, [conversationId]);
+    conversationId && setRoom(conversationId as any);
+  }, [conversationId, setRoom]);
   useEffect(() => {
     if (getMessages) {
       const uniqueUserIds = new Set(
@@ -110,6 +114,12 @@ export default function Home() {
       });
     }
   }, [getMessages, getUser, userImages, loadingImages]);
+  useEffect(() => {
+    if (room) {
+      getConversations?.find(({ _id }) => _id === room) &&
+        setConversationId(room as any);
+    }
+  }, [room, getConversations]);
 
   return (
     <div className="flex w-full flex-col">
