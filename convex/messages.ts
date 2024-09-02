@@ -1,3 +1,4 @@
+import { checkText } from "smile2emoji";
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
@@ -17,34 +18,7 @@ export const sendMessage = mutation({
 
     //send message
     console.log("sending message");
-
-    //replace emojis
-    if (args.message.includes(":)"))
-      args.message = args.message.replace(":)", "😊");
-    if (args.message.includes(":("))
-      args.message = args.message.replace(":(", "😢");
-    if (args.message.includes(":D"))
-      args.message = args.message.replace(":D", "😄");
-    if (args.message.includes(":P"))
-      args.message = args.message.replace(":P", "😛");
-    if (args.message.includes(":O"))
-      args.message = args.message.replace(":O", "😲");
-    if (args.message.includes(":|"))
-      args.message = args.message.replace(":|", "😐");
-    if (args.message.includes(":*"))
-      args.message = args.message.replace(":*", "😘");
-    if (args.message.includes(":$"))
-      args.message = args.message.replace(":$", "🤑");
-    if (args.message.includes(":^"))
-      args.message = args.message.replace(":^", "🤔");
-    if (args.message.includes(":&"))
-      args.message = args.message.replace(":&", "🤐");
-    if (args.message.includes(":!"))
-      args.message = args.message.replace(":!", "😠");
-    if (args.message.includes(":?"))
-      args.message = args.message.replace(":?", "🤨");
-    if (args.message.includes(":;"))
-      args.message = args.message.replace(":;", "😏");
+    args.message = checkText(args.message);
 
     const messageId = await ctx.db.insert("messages", {
       conversationId: args.conversationId,
