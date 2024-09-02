@@ -94,6 +94,26 @@ export const sendDM = mutation({
   },
 });
 
+export const deleteMessage = mutation({
+  args: { messageId: v.id("messages") },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (identity === null) {
+      throw new Error("Not authenticated");
+    }
+
+    //delete message
+    console.log("deleting message");
+    const messageCheck = await ctx.db.get(args.messageId);
+    if (messageCheck.userId !== identity.tokenIdentifier) {
+      throw new Error("Not authorized");
+    }
+
+    await ctx.db.delete(args.messageId);
+  },
+});
+
 export const getDMs = query({
   handler: async (ctx) => {
     const identity = await ctx.auth.getUserIdentity();
