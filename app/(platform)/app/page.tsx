@@ -145,7 +145,7 @@ export default function Home() {
             </form>
           </span>
           <div className="flex flex-col gap-2">
-            {getConversations?.map(({ _id }) => (
+            {getConversations?.map(({ _id, imageNumber }) => (
               <div
                 key={_id}
                 className={`flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm hover:bg-zinc-900 hover:bg-opacity-60 ${conversationId === _id ? "bg-zinc-900 bg-opacity-60" : ""}`}
@@ -155,7 +155,7 @@ export default function Home() {
               >
                 <span className="aspect-square h-14 w-14 min-w-14 overflow-hidden rounded-md">
                   <Image
-                    src={`/avatars/monstr-${Math.floor(Math.random() * (8 - 1 + 1)) + 1}.jpg`}
+                    src={`/avatars/monstr-${imageNumber}.jpg`}
                     alt="Logo"
                     width={0}
                     height={0}
@@ -181,7 +181,11 @@ export default function Home() {
               <span className="flex gap-2 items-center">
                 <span className="aspect-square h-10 w-10 overflow-hidden rounded-md">
                   <Image
-                    src={`/avatars/monstr-${Math.floor(Math.random() * (8 - 1 + 1)) + 1}.jpg`}
+                    src={`/avatars/monstr-${
+                      getConversations?.find(
+                        ({ _id }) => _id === conversationId,
+                      )?.imageNumber
+                    }.jpg`}
                     alt="Logo"
                     width={0}
                     height={0}
