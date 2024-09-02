@@ -17,6 +17,35 @@ export const sendMessage = mutation({
 
     //send message
     console.log("sending message");
+
+    //replace emojis
+    if (args.message.includes(":)"))
+      args.message = args.message.replace(":)", "😊");
+    if (args.message.includes(":("))
+      args.message = args.message.replace(":(", "😢");
+    if (args.message.includes(":D"))
+      args.message = args.message.replace(":D", "😄");
+    if (args.message.includes(":P"))
+      args.message = args.message.replace(":P", "😛");
+    if (args.message.includes(":O"))
+      args.message = args.message.replace(":O", "😲");
+    if (args.message.includes(":|"))
+      args.message = args.message.replace(":|", "😐");
+    if (args.message.includes(":*"))
+      args.message = args.message.replace(":*", "😘");
+    if (args.message.includes(":$"))
+      args.message = args.message.replace(":$", "🤑");
+    if (args.message.includes(":^"))
+      args.message = args.message.replace(":^", "🤔");
+    if (args.message.includes(":&"))
+      args.message = args.message.replace(":&", "🤐");
+    if (args.message.includes(":!"))
+      args.message = args.message.replace(":!", "😠");
+    if (args.message.includes(":?"))
+      args.message = args.message.replace(":?", "🤨");
+    if (args.message.includes(":;"))
+      args.message = args.message.replace(":;", "😏");
+
     const messageId = await ctx.db.insert("messages", {
       conversationId: args.conversationId,
       message: args.message,
