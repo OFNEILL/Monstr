@@ -145,7 +145,7 @@ export default function Home() {
             </form>
           </span>
           <div className="flex flex-col gap-2">
-            {getConversations?.map(({ _id, imageNumber }) => {
+            {getConversations?.map(({ _id, imageNumber, conversationName }) => {
               const messagePreview = getConversationPreviews?.find(
                 ({ conversationId }) => conversationId === _id,
               )?.message;
@@ -168,7 +168,7 @@ export default function Home() {
                     />
                   </span>
                   <span className="w-full max-w-72">
-                    <p className="font-semibold">{_id}</p>
+                    <p className="font-semibold">{conversationName}</p>
                     <p
                       className={`overflow-hidden text-ellipsis whitespace-nowrap ${messagePreview ? "text-muted-foreground" : "text-zinc-500/60 italic"}`}
                     >
@@ -200,7 +200,18 @@ export default function Home() {
                     className="h-full w-full object-cover"
                   />
                 </span>
-                <span className="text-sm">{conversationId}</span>
+                <span className="flex flex-col">
+                  <span className="text-sm">
+                    {
+                      getConversations?.find(
+                        (conversation) => conversation._id === conversationId,
+                      )?.conversationName
+                    }
+                  </span>
+                  <span className="text-xs text-zinc-500/60">
+                    {conversationId}
+                  </span>
+                </span>
               </span>
               {getConversations
                 ?.find(({ _id }) => _id === conversationId)
