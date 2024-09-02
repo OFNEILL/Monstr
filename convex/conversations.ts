@@ -1,12 +1,18 @@
 import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
+type ConversationPreview = {
+  convesationId: string;
+  message: string | null;
+  messageId: string;
+};
+
 export const openConversation = mutation({
   handler: async (ctx) => {
     //create convo
     console.log("opening conversation");
     //generater random number
-    const randomNumber = Math.floor(Math.random() * 8);
+    const randomNumber = Math.floor(Math.random() * 7) + 1;
 
     const identity = await ctx.auth.getUserIdentity();
 
@@ -46,9 +52,8 @@ export const closeConversation = mutation({
         ),
       )
       .first();
-    //delete convo from table
-    console.log("creatorId:", creatorId);
 
+    //delete convo from table
     if (creatorId === null) {
       throw new Error("You are not the creator of this conversation");
     }
@@ -112,5 +117,34 @@ export const joinRandomConversation = mutation({
       userId: identity.tokenIdentifier,
       conversationId: args.conversationId,
     });
+  },
+});
+
+export const getConversationPreviews = query({
+  handler: async (ctx) => {
+    //get all conversations
+    console.log("getting conversations");
+    const conversations = await ctx.db.query("conversations").take(100);
+
+    const conversationPreviews: ConversationPreview[] = [];
+
+    for (let i = 0; i < conversations.length; i++) {
+      const conversation = conversations[i];
+      const messages = await ctx.db
+        .query("messages")
+        .filter((x) => x.eq(x.field("conversationId"), conversation._id))
+        .order("desc")
+        .take(1);
+
+      const preview: ConversationPreview = {
+        convesationId: conversation._id,
+        message: messages[0]?.text,
+        messageId: messages[0]?._id,
+      };
+
+      conversationPreviews.push(preview);
+    }
+
+    return conversationPreviews;
   },
 });
