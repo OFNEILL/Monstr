@@ -25,10 +25,9 @@ export default function Home() {
   const getMessages = useQuery(api.messages.getMessages, {
     conversationId: conversationId!,
   });
-  // const getLatestMessage = useQuery(api.messages.getLatestMessage, {
-  //   conversationId: conversationId!,
-  // });
-
+  const getConversationPreviews = useQuery(
+    api.conversations.getConversationPreviews,
+  );
   const { user } = useUser();
   const getUser = useCallback(
     async (userId: string) => {
@@ -146,34 +145,41 @@ export default function Home() {
             </form>
           </span>
           <div className="flex flex-col gap-2">
-            {getConversations?.map(({ _id, imageNumber }) => (
-              <div
-                key={_id}
-                className={`flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm hover:bg-zinc-900 hover:bg-opacity-60 ${conversationId === _id ? "bg-zinc-900 bg-opacity-60" : ""}`}
-                onClick={() => {
-                  setConversationId(_id);
-                }}
-              >
-                <span className="aspect-square h-14 w-14 min-w-14 overflow-hidden rounded-md">
-                  <Image
-                    src={`/avatars/monstr-${imageNumber}.jpg`}
-                    alt="Logo"
-                    width={0}
-                    height={0}
-                    sizes="100vw"
-                    className="h-full w-full object-cover"
-                  />
-                </span>
-                <span className="w-full max-w-72">
-                  <p className="font-semibold">{_id}</p>
-                  <p className="overflow-hidden text-ellipsis whitespace-nowrap">
-                    lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
-                  </p>
-                </span>
-              </div>
-            ))}
+            {getConversations?.map(({ _id, imageNumber }) => {
+              const messagePreview = getConversationPreviews?.find(
+                ({ conversationId }) => conversationId === _id,
+              )?.message;
+              return (
+                <div
+                  key={_id}
+                  className={`flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm hover:bg-zinc-900 hover:bg-opacity-60 ${conversationId === _id ? "bg-zinc-900 bg-opacity-60" : ""}`}
+                  onClick={() => {
+                    setConversationId(_id);
+                  }}
+                >
+                  <span className="aspect-square h-14 w-14 min-w-14 overflow-hidden rounded-md">
+                    <Image
+                      src={`/avatars/monstr-${imageNumber}.jpg`}
+                      alt="Logo"
+                      width={0}
+                      height={0}
+                      sizes="100vw"
+                      className="h-full w-full object-cover"
+                    />
+                  </span>
+                  <span className="w-full max-w-72">
+                    <p className="font-semibold">{_id}</p>
+                    <p
+                      className={`overflow-hidden text-ellipsis whitespace-nowrap ${messagePreview ? "text-muted-foreground" : "text-zinc-500/60 italic"}`}
+                    >
+                      {getConversationPreviews?.filter(
+                        ({ conversationId }) => conversationId === _id,
+                      )[0]?.message || "No messages"}
+                    </p>
+                  </span>
+                </div>
+              );
+            })}
           </div>
         </div>
         {conversationId !== undefined ? (
