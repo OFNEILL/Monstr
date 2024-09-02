@@ -412,6 +412,19 @@ export const closeConversation = mutation({
     }
 
     await ctx.db.delete(args.id);
+
+    //get ids of messages in convo
+    const messages = await ctx.db
+      .query("messages")
+      .filter((x) => x.eq(x.field("conversationId"), args.id))
+      .collect();
+
+    //delete messages
+    for (let i = 0; i < messages.length; i++) {
+      const message = messages[i];
+      await ctx.db.delete(message._id);
+    }
+
     console.log("deleted");
   },
 });

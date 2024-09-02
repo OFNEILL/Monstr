@@ -24,8 +24,6 @@ export const sendMessage = mutation({
       messageId: args.messageId,
     });
 
-    console.log(messageId);
-
     return messageId;
   },
 });
