@@ -5,7 +5,19 @@ export const openConversation = mutation({
   handler: async (ctx) => {
     //create convo
     console.log("opening conversation");
-    const conversationId = await ctx.db.insert("conversations", {});
+    //generater random number
+    const randomNumber = Math.floor(Math.random() * 8);
+
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (identity === null) {
+      throw new Error("Not authenticated");
+    }
+
+    const conversationId = await ctx.db.insert("conversations", {
+      imageNumber: randomNumber,
+      creatorId: identity.tokenIdentifier,
+    });
 
     //get convoId
     console.log("getting id");
@@ -18,7 +30,29 @@ export const openConversation = mutation({
 export const closeConversation = mutation({
   args: { id: v.id("conversations") },
   handler: async (ctx, args) => {
+    //are you creator?
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (identity === null) {
+      throw new Error("Not authenticated");
+    }
+
+    const creatorId = await ctx.db
+      .query("conversations")
+      .filter((x) =>
+        x.and(
+          x.eq(x.field("_id"), args.id),
+          x.eq(x.field("creatorId"), identity.tokenIdentifier),
+        ),
+      )
+      .first();
     //delete convo from table
+    console.log("creatorId:", creatorId);
+
+    if (creatorId === null) {
+      throw new Error("You are not the creator of this conversation");
+    }
+
     await ctx.db.delete(args.id);
     console.log("deleted");
   },
