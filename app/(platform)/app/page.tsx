@@ -96,6 +96,9 @@ export default function Home() {
     }
   }, [getMessages]);
   useEffect(() => {
+    setReplyingTo(undefined);
+  }, [conversationId]);
+  useEffect(() => {
     if (getMessages) {
       const uniqueUserIds = new Set(
         getMessages.map(({ userId }) => userId.split("|")[1]),
@@ -248,9 +251,24 @@ export default function Home() {
               {getMessages?.map(({ message, _id, userId, messageId }) => (
                 <Fragment key={_id}>
                   {userId.split("|")[1] === user?.id ? (
-                    <div className="flex flex-col items-end w-fit ml-auto gap-2">
+                    <div
+                      className="flex flex-col items-end w-fit ml-auto gap-2 scroll-m-2"
+                      id={_id}
+                    >
                       {messageId && (
-                        <span className="flex gap-2">
+                        <span
+                          className="flex gap-2 cursor-pointer"
+                          onClick={() => {
+                            const scrollMessage = document.getElementById(
+                              messageId,
+                            ) as HTMLDivElement;
+                            scrollMessage &&
+                              scrollMessage.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start",
+                              });
+                          }}
+                        >
                           {(() => {
                             const message = getMessages?.find(
                               ({ _id }) => _id === messageId,
@@ -328,74 +346,108 @@ export default function Home() {
                       </div>
                     </div>
                   ) : (
-                    <div className="mr-auto flex items-center gap-2 group w-fit">
-                      <span className="aspect-square h-6 w-6 overflow-hidden rounded-full">
-                        {loadingImages[userId.split("|")[1]] ? (
-                          <div className="h-full w-full bg-zinc-700 animate-pulse"></div>
-                        ) : (
-                          <Image
-                            src={
-                              userImages[userId.split("|")[1]] ||
-                              "/avatars/no-avatar.jpg"
-                            }
-                            alt="User Avatar"
-                            width={0}
-                            height={0}
-                            sizes="100vw"
-                            className="h-full w-full object-cover"
-                          />
-                        )}
-                      </span>
-                      <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm max-w-xl text-wrap">
-                        {message
-                          .split(" ")
-                          .map((word: string, index: number) => {
-                            const isLastWord =
-                              index === message.split(" ").length - 1;
-                            const isLink =
-                              word.startsWith("http") ||
-                              word.startsWith("www") ||
-                              word.endsWith(".com");
+                    <div
+                      className="flex flex-col gap-2 mr-auto w-fit items-start scroll-m-2"
+                      id={_id}
+                    >
+                      {messageId && (
+                        <span
+                          className="flex flex-row-reverse gap-2 cursor-pointer"
+                          onClick={() => {
+                            const scrollMessage = document.getElementById(
+                              messageId,
+                            ) as HTMLDivElement;
+                            scrollMessage &&
+                              scrollMessage.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start",
+                              });
+                          }}
+                        >
+                          {(() => {
+                            const message = getMessages?.find(
+                              ({ _id }) => _id === messageId,
+                            )?.message;
+                            return (
+                              <div
+                                className={`flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm max-w-xl opacity-75 ${message ? "text-muted-foreground" : "text-zinc-500/80 italic"}`}
+                              >
+                                {message || "Message has been deleted"}
+                              </div>
+                            );
+                          })()}
+                          <span className="w-1 h-full rounded-md bg-[#d3f806]" />
+                        </span>
+                      )}
+                      <div className="flex items-center gap-2 group w-fit">
+                        <span className="aspect-square h-6 w-6 overflow-hidden rounded-full">
+                          {loadingImages[userId.split("|")[1]] ? (
+                            <div className="h-full w-full bg-zinc-700 animate-pulse"></div>
+                          ) : (
+                            <Image
+                              src={
+                                userImages[userId.split("|")[1]] ||
+                                "/avatars/no-avatar.jpg"
+                              }
+                              alt="User Avatar"
+                              width={0}
+                              height={0}
+                              sizes="100vw"
+                              className="h-full w-full object-cover"
+                            />
+                          )}
+                        </span>
+                        <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm max-w-xl text-wrap">
+                          {message
+                            .split(" ")
+                            .map((word: string, index: number) => {
+                              const isLastWord =
+                                index === message.split(" ").length - 1;
+                              const isLink =
+                                word.startsWith("http") ||
+                                word.startsWith("www") ||
+                                word.endsWith(".com");
 
-                            if (isLink) {
+                              if (isLink) {
+                                return (
+                                  <Fragment key={index}>
+                                    <Link
+                                      href={
+                                        word.startsWith("www") ||
+                                        word.endsWith(".com")
+                                          ? `https://${word}`
+                                          : word
+                                      }
+                                      target="_blank"
+                                      rel="noreferrer"
+                                      className="font-semibold"
+                                    >
+                                      {word}
+                                    </Link>
+                                    {!isLastWord && " "}
+                                  </Fragment>
+                                );
+                              }
+
                               return (
                                 <Fragment key={index}>
-                                  <Link
-                                    href={
-                                      word.startsWith("www") ||
-                                      word.endsWith(".com")
-                                        ? `https://${word}`
-                                        : word
-                                    }
-                                    target="_blank"
-                                    rel="noreferrer"
-                                    className="font-semibold"
-                                  >
-                                    {word}
-                                  </Link>
+                                  {word}
                                   {!isLastWord && " "}
                                 </Fragment>
                               );
-                            }
-
-                            return (
-                              <Fragment key={index}>
-                                {word}
-                                {!isLastWord && " "}
-                              </Fragment>
-                            );
-                          })}
+                            })}
+                        </div>
+                        <span className="flex gap-2 group-hover:opacity-100 transition-opacity duration-100 opacity-0">
+                          <ReplyIcon
+                            size={16}
+                            strokeWidth={1.5}
+                            className="text-zinc-400 cursor-pointer"
+                            onClick={() => {
+                              setReplyingTo(_id);
+                            }}
+                          />
+                        </span>
                       </div>
-                      <span className="flex gap-2 group-hover:opacity-100 transition-opacity duration-100 opacity-0">
-                        <ReplyIcon
-                          size={16}
-                          strokeWidth={1.5}
-                          className="text-zinc-400 cursor-pointer"
-                          onClick={() => {
-                            setReplyingTo(_id);
-                          }}
-                        />
-                      </span>
                     </div>
                   )}
                 </Fragment>
