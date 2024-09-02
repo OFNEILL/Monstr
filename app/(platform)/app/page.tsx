@@ -119,7 +119,15 @@ export default function Home() {
       getConversations?.find(({ _id }) => _id === room) &&
         setConversationId(room as any);
     }
-  }, [room, getConversations]);
+  }, [room, getConversations, setRoom]);
+  useEffect(() => {
+    if (
+      getConversations &&
+      !getConversations?.find(({ _id }) => _id === conversationId)
+    ) {
+      setRoom(null);
+    }
+  }, [getConversations, conversationId, setRoom]);
 
   return (
     <div className="flex w-full flex-col">
@@ -206,7 +214,8 @@ export default function Home() {
             })}
           </div>
         </div>
-        {conversationId !== undefined ? (
+        {conversationId !== undefined &&
+        getConversations?.find(({ _id }) => _id === conversationId) ? (
           <div className="flex flex-grow flex-col h-ful justify-between">
             <div className="flex justify-between items-center border-b border-b-zinc-900 p-2">
               <span className="flex gap-2 items-center">
@@ -239,7 +248,7 @@ export default function Home() {
               </span>
               {getConversations
                 ?.find(({ _id }) => _id === conversationId)
-                .creatorId.split("|")[1] === user?.id && (
+                ?.creatorId.split("|")[1] === user?.id && (
                 <span
                   className="border border-red-500 rounded-md text-sm px-2 py-1.5 bg-red-500 bg-opacity-60 cursor-pointer hover:bg-opacity-80"
                   onClick={() => {
