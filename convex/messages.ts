@@ -44,18 +44,3 @@ export const getMessages = query({
     return messages;
   },
 });
-
-export const getLatestMessage = query({
-  args: { conversationId: v.string() },
-  handler: async (ctx, args) => {
-    //get latest message
-    console.log("getting latest message");
-    const message = await ctx.db
-      .query("messages")
-      .filter((x) => x.eq(x.field("conversationId"), args.conversationId))
-      .order("desc")
-      .take(1);
-
-    return message;
-  },
-});

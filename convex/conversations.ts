@@ -138,7 +138,7 @@ export const getConversationPreviews = query({
 
       const preview: ConversationPreview = {
         convesationId: conversation._id,
-        message: messages[0]?.text,
+        message: messages[0]?.message,
         messageId: messages[0]?._id,
       };
 
