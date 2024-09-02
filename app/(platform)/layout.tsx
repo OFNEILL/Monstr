@@ -4,6 +4,7 @@ import "@/app/globals.css";
 import { ConvexClientProvider } from "@/app/ConvexClientProvider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Sidebar } from "@/components/sidebar";
+import { cn } from "@/lib/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${inter.className} h-screen w-screen`}>
+        <body className={cn(inter.className, "h-screen w-screen")}>
           <ConvexClientProvider>
             <Sidebar>{children}</Sidebar>
           </ConvexClientProvider>

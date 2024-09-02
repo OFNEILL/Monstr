@@ -1,10 +1,10 @@
 "use client";
 
 import { api } from "@/convex/_generated/api";
+import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
 import {
-  DeleteIcon,
   MessageCircleMoreIcon,
   ReplyIcon,
   SquarePenIcon,
@@ -13,7 +13,6 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
 import { useQueryState } from "nuqs";
 import { Fragment, useRef, useState, useEffect, useCallback } from "react";
 
@@ -184,7 +183,10 @@ export default function Home() {
               return (
                 <div
                   key={_id}
-                  className={`flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm hover:bg-zinc-900 hover:bg-opacity-60 ${conversationId === _id ? "bg-zinc-900 bg-opacity-60" : ""}`}
+                  className={cn(
+                    "flex cursor-pointer items-center gap-2 rounded-md p-2 text-sm hover:bg-zinc-900 hover:bg-opacity-60",
+                    conversationId === _id ? "bg-zinc-900 bg-opacity-60" : "",
+                  )}
                   onClick={() => {
                     setConversationId(_id);
                   }}
@@ -202,7 +204,12 @@ export default function Home() {
                   <span className="w-full max-w-72">
                     <p className="font-semibold">{conversationName}</p>
                     <p
-                      className={`overflow-hidden text-ellipsis whitespace-nowrap ${messagePreview ? "text-muted-foreground" : "text-zinc-500/60 italic"}`}
+                      className={cn(
+                        "overflow-hidden text-ellipsis whitespace-nowrap",
+                        messagePreview
+                          ? "text-muted-foreground"
+                          : "text-zinc-500/60 italic",
+                      )}
                     >
                       {getConversationPreviews?.filter(
                         ({ conversationId }) => conversationId === _id,
@@ -294,7 +301,12 @@ export default function Home() {
                             )?.message;
                             return (
                               <div
-                                className={`flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm max-w-xl opacity-75 ${message ? "text-muted-foreground" : "text-zinc-500/80 italic"}`}
+                                className={cn(
+                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm max-w-xl opacity-75",
+                                  message
+                                    ? "text-muted-foreground"
+                                    : "text-zinc-500/80 italic",
+                                )}
                               >
                                 {message || "Message has been deleted"}
                               </div>
@@ -389,7 +401,12 @@ export default function Home() {
                             )?.message;
                             return (
                               <div
-                                className={`flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm max-w-xl opacity-75 ${message ? "text-muted-foreground" : "text-zinc-500/80 italic"}`}
+                                className={cn(
+                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm max-w-xl opacity-75",
+                                  message
+                                    ? "text-muted-foreground"
+                                    : "text-zinc-500/80 italic",
+                                )}
                               >
                                 {message || "Message has been deleted"}
                               </div>
