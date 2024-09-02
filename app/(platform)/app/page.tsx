@@ -202,18 +202,22 @@ export default function Home() {
                 </span>
                 <span className="text-sm">{conversationId}</span>
               </span>
-              <span
-                className="border border-red-500 rounded-md text-sm px-2 py-1.5 bg-red-500 bg-opacity-60 cursor-pointer hover:bg-opacity-80"
-                onClick={() => {
-                  closeConversation
-                    .call({}, { id: conversationId! })
-                    .then(() => {
-                      setConversationId(undefined);
-                    });
-                }}
-              >
-                Close Conversation
-              </span>
+              {getConversations
+                ?.find(({ _id }) => _id === conversationId)
+                .creatorId.split("|")[1] === user?.id && (
+                <span
+                  className="border border-red-500 rounded-md text-sm px-2 py-1.5 bg-red-500 bg-opacity-60 cursor-pointer hover:bg-opacity-80"
+                  onClick={() => {
+                    closeConversation
+                      .call({}, { id: conversationId! })
+                      .then(() => {
+                        setConversationId(undefined);
+                      });
+                  }}
+                >
+                  Close Conversation
+                </span>
+              )}
             </div>
             <span
               className="flex flex-grow flex-col w-full p-2.5 gap-2 overflow-x-hidden overflow-y-auto"
