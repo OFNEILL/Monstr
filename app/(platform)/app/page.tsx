@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils";
 import { useUser } from "@clerk/nextjs";
 import { useMutation, useQuery } from "convex/react";
 import {
+  ArrowLeftIcon,
   MessageCircleMoreIcon,
   ReplyIcon,
   SquarePenIcon,
@@ -147,7 +148,12 @@ export default function Home() {
         </span>
       </span>
       <div className="flex h-[calc(100%-60px)]">
-        <div className="flex flex-col gap-4 h-full border-r border-r-zinc-900 p-2 pt-0 overflow-y-auto overflow-x-hidden min-w-80 w-80">
+        <div
+          className={cn(
+            "flex flex-col gap-4 h-full lg:border-r lg:border-r-zinc-900 p-2 pt-0 overflow-y-auto overflow-x-hidden lg:min-w-80 lg:w-80 w-full",
+            conversationId !== undefined && "hidden lg:flex",
+          )}
+        >
           <span className="px-2 sticky pt-4 pb-2 top-0 bg-black flex flex-col gap-4">
             <span>
               <h2 className="font-semibold">Inbox</h2>
@@ -226,6 +232,16 @@ export default function Home() {
           <div className="flex flex-grow flex-col h-ful justify-between">
             <div className="flex justify-between items-center border-b border-b-zinc-900 p-2">
               <span className="flex gap-2 items-center">
+                <span className="aspect-square flex lg:hidden justify-center items-center overflow-hidden rounded-md">
+                  <ArrowLeftIcon
+                    size={16}
+                    strokeWidth={1.5}
+                    className="cursor-pointer"
+                    onClick={() => {
+                      setConversationId(undefined);
+                    }}
+                  />
+                </span>
                 <span className="aspect-square h-10 w-10 overflow-hidden rounded-md">
                   <Image
                     src={`/avatars/monstr-${
@@ -256,18 +272,32 @@ export default function Home() {
               {getConversations
                 ?.find(({ _id }) => _id === conversationId)
                 ?.creatorId.split("|")[1] === user?.id && (
-                <span
-                  className="border border-red-500 rounded-md text-sm px-2 py-1.5 bg-red-500 bg-opacity-60 cursor-pointer hover:bg-opacity-80"
-                  onClick={() => {
-                    closeConversation
-                      .call({}, { id: conversationId! })
-                      .then(() => {
-                        setConversationId(undefined);
-                      });
-                  }}
-                >
-                  Close Conversation
-                </span>
+                <>
+                  <span
+                    className="border border-red-500 rounded-md text-sm px-2 py-1.5 bg-red-500 bg-opacity-60 cursor-pointer hover:bg-opacity-80 lg:flex hidden"
+                    onClick={() => {
+                      closeConversation
+                        .call({}, { id: conversationId! })
+                        .then(() => {
+                          setConversationId(undefined);
+                        });
+                    }}
+                  >
+                    Close Conversation
+                  </span>
+                  <span
+                    className="border border-red-500 rounded-md text-sm px-2 py-1.5 bg-red-500 bg-opacity-60 cursor-pointer hover:bg-opacity-80 flex lg:hidden"
+                    onClick={() => {
+                      closeConversation
+                        .call({}, { id: conversationId! })
+                        .then(() => {
+                          setConversationId(undefined);
+                        });
+                    }}
+                  >
+                    <Trash2Icon size={16} strokeWidth={1.5} />
+                  </span>
+                </>
               )}
             </div>
             <span
@@ -316,7 +346,7 @@ export default function Home() {
                         </span>
                       )}
                       <div className="group flex flex-row-reverse items-center gap-2 w-fit">
-                        <div className="bg-blue-600 rounded-md w-fit p-1.5 text-sm max-w-xl text-wrap">
+                        <div className="bg-blue-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-md text-wrap">
                           {message
                             .split(" ")
                             .map((word: string, index: number) => {
@@ -402,7 +432,7 @@ export default function Home() {
                             return (
                               <div
                                 className={cn(
-                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm max-w-xl opacity-75",
+                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-md opacity-75",
                                   message
                                     ? "text-muted-foreground"
                                     : "text-zinc-500/80 italic",
@@ -491,12 +521,12 @@ export default function Home() {
             </span>
             <form onSubmit={handleFormSubmit} ref={messageFormRef}>
               {replyingTo && (
-                <div className="flex items-center gap-2 p-2 border-t border-t-zinc-900 justify-between">
-                  <span className="flex gap-2 items-center">
+                <div className="flex items-start gap-2 p-2 border-t border-t-zinc-900 justify-between">
+                  <span className="flex gap-2 lg:items-center items-start lg:flex-row flex-col">
                     <span className="text-muted-foreground text-sm">
                       Replying to:
                     </span>
-                    <span className="bg-zinc-900 bg-opacity-60 rounded-md p-1.5 text-sm max-w-xl">
+                    <span className="bg-zinc-900 bg-opacity-60 rounded-md p-1.5 text-sm lg:max-w-xl max-w-md">
                       {
                         getMessages?.find(({ _id }) => _id === replyingTo)
                           ?.message
@@ -531,7 +561,7 @@ export default function Home() {
             </form>
           </div>
         ) : (
-          <div className="flex justify-center items-center flex-col flex-grow gap-6">
+          <div className="hidden justify-center items-center flex-col flex-grow gap-6 lg:flex">
             <span className="border-2 border-slate-50 rounded-full p-4">
               <MessageCircleMoreIcon size={64} strokeWidth={1.5} />
             </span>
