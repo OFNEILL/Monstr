@@ -144,7 +144,7 @@ export default function Home() {
               />
             </form>
           </span>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 min-w-96">
             {getConversations?.map(({ _id, imageNumber, conversationName }) => {
               const messagePreview = getConversationPreviews?.find(
                 ({ conversationId }) => conversationId === _id,
