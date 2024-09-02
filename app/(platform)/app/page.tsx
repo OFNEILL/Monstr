@@ -135,7 +135,7 @@ export default function Home() {
         <h1 className="text-xl">All Rooms</h1>
         <span>
           <span
-            className="flex cursor-pointer items-center gap-2 rounded-md bg-zinc-900 px-2 py-1.5 text-sm hover:bg-opacity-60"
+            className="flex cursor-pointer items-center gap-2 rounded-md bg-zinc-900 px-2 sm:py-1.5 py-2 text-sm hover:bg-opacity-60"
             onClick={() => {
               openConversation.call({}).then((id: any) => {
                 setConversationId(id);
@@ -143,7 +143,7 @@ export default function Home() {
             }}
           >
             <SquarePenIcon size={16} strokeWidth={1.5} />
-            Open Conversation
+            <p className="sm:block hidden">Open Conversation</p>
           </span>
         </span>
       </span>
