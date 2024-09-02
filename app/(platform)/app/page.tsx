@@ -238,25 +238,41 @@ export default function Home() {
                 <Fragment key={_id}>
                   {userId.split("|")[1] === user?.id ? (
                     <div className="bg-blue-600 rounded-md w-fit ml-auto p-1.5 text-sm max-w-xl text-wrap">
-                      {message.split(" ").map((word: string) => {
-                        if (word.startsWith("http") || word.startsWith("www")) {
+                      {message.split(" ").map((word: string, index: number) => {
+                        const isLastWord =
+                          index === message.split(" ").length - 1;
+                        const isLink =
+                          word.startsWith("http") ||
+                          word.startsWith("www") ||
+                          word.endsWith(".com");
+
+                        if (isLink) {
                           return (
-                            <Link
-                              key={word}
-                              href={
-                                word.startsWith("www")
-                                  ? `https://${word}`
-                                  : word
-                              }
-                              target="_blank"
-                              rel="noreferrer"
-                              className="font-semibold"
-                            >
-                              {word}
-                            </Link>
+                            <Fragment key={index}>
+                              <Link
+                                href={
+                                  word.startsWith("www") ||
+                                  word.endsWith(".com")
+                                    ? `https://${word}`
+                                    : word
+                                }
+                                target="_blank"
+                                rel="noreferrer"
+                                className="font-semibold"
+                              >
+                                {word}
+                              </Link>
+                              {!isLastWord && " "}
+                            </Fragment>
                           );
                         }
-                        return word + " ";
+
+                        return (
+                          <Fragment key={index}>
+                            {word}
+                            {!isLastWord && " "}
+                          </Fragment>
+                        );
                       })}
                     </div>
                   ) : (
@@ -279,29 +295,44 @@ export default function Home() {
                         )}
                       </span>
                       <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm max-w-xl text-wrap">
-                        {message.split(" ").map((word: string) => {
-                          if (
-                            word.startsWith("http") ||
-                            word.startsWith("www")
-                          ) {
+                        {message
+                          .split(" ")
+                          .map((word: string, index: number) => {
+                            const isLastWord =
+                              index === message.split(" ").length - 1;
+                            const isLink =
+                              word.startsWith("http") ||
+                              word.startsWith("www") ||
+                              word.endsWith(".com");
+
+                            if (isLink) {
+                              return (
+                                <Fragment key={index}>
+                                  <Link
+                                    href={
+                                      word.startsWith("www") ||
+                                      word.endsWith(".com")
+                                        ? `https://${word}`
+                                        : word
+                                    }
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="font-semibold"
+                                  >
+                                    {word}
+                                  </Link>
+                                  {!isLastWord && " "}
+                                </Fragment>
+                              );
+                            }
+
                             return (
-                              <Link
-                                key={word}
-                                href={
-                                  word.startsWith("www")
-                                    ? `https://${word}`
-                                    : word
-                                }
-                                target="_blank"
-                                rel="noreferrer"
-                                className="font-semibold"
-                              >
+                              <Fragment key={index}>
                                 {word}
-                              </Link>
+                                {!isLastWord && " "}
+                              </Fragment>
                             );
-                          }
-                          return word + " ";
-                        })}
+                          })}
                       </div>
                     </div>
                   )}
