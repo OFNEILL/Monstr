@@ -65,9 +65,51 @@ export const getMessages = query({
     const messages = await ctx.db
       .query("messages")
       .filter((x) => x.eq(x.field("conversationId"), args.conversationId))
-      .order("asc")
+      .order("desc")
       .take(100);
 
-    return messages;
+    return messages.reverse();
+  },
+});
+
+export const sendDM = mutation({
+  args: { to: v.string(), message: v.string() },
+  handler: async (ctx, args) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (identity === null) {
+      throw new Error("Not authenticated");
+    }
+
+    //send message
+    console.log("sending message");
+
+    const messageId = await ctx.db.insert("messages", {
+      to: args.to,
+      message: args.message,
+      userId: identity.tokenIdentifier,
+    });
+
+    return messageId;
+  },
+});
+
+export const getDMs = query({
+  handler: async (ctx) => {
+    const identity = await ctx.auth.getUserIdentity();
+
+    if (identity === null) {
+      throw new Error("Not authenticated");
+    }
+
+    //getting dm users
+    await ctx.db
+      .query("messages")
+      .filter((x) =>
+        x.and(
+          x.eq(x.field("to"), "dm"),
+          x.eq(x.field("userId"), identity.tokenIdentifier),
+        ),
+      );
   },
 });
