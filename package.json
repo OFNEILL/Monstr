@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^5.3.7",
+    "@faker-js/faker": "^8.4.1",
     "clerk": "^0.8.3",
     "convex": "^1.15.0",
     "lucide-react": "^0.437.0",
