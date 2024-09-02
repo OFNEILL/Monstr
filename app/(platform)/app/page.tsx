@@ -131,7 +131,12 @@ export default function Home() {
 
   return (
     <div className="flex w-full flex-col">
-      <span className="flex items-center justify-between border-b border-b-zinc-900 px-4 py-3.5">
+      <span
+        className={cn(
+          "flex items-center justify-between border-b border-b-zinc-900 px-4 py-3.5",
+          conversationId !== undefined && "hidden lg:flex",
+        )}
+      >
         <h1 className="text-xl">All Rooms</h1>
         <span>
           <span
@@ -147,7 +152,12 @@ export default function Home() {
           </span>
         </span>
       </span>
-      <div className="flex h-[calc(100%-60px)]">
+      <div
+        className={cn(
+          "flex",
+          conversationId !== undefined && "lg:h-[calc(100%-60px)] h-full",
+        )}
+      >
         <div
           className={cn(
             "flex flex-col gap-4 h-full lg:border-r lg:border-r-zinc-900 p-2 pt-0 overflow-y-auto overflow-x-hidden lg:min-w-80 lg:w-80 w-full",
@@ -264,7 +274,7 @@ export default function Home() {
                       )?.conversationName
                     }
                   </span>
-                  <span className="text-xs text-zinc-500/60">
+                  <span className="text-xs text-zinc-500/60 lg:block hidden">
                     {conversationId}
                   </span>
                 </span>
@@ -332,7 +342,7 @@ export default function Home() {
                             return (
                               <div
                                 className={cn(
-                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm max-w-xl opacity-75",
+                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-none min-w-0 opacity-75",
                                   message
                                     ? "text-muted-foreground"
                                     : "text-zinc-500/80 italic",
@@ -346,7 +356,7 @@ export default function Home() {
                         </span>
                       )}
                       <div className="group flex flex-row-reverse items-center gap-2 w-fit">
-                        <div className="bg-blue-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-md text-wrap">
+                        <div className="bg-blue-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-none min-w-0 text-wrap">
                           {message
                             .split(" ")
                             .map((word: string, index: number) => {
@@ -432,7 +442,7 @@ export default function Home() {
                             return (
                               <div
                                 className={cn(
-                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-md opacity-75",
+                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-none min-w-0 opacity-75",
                                   message
                                     ? "text-muted-foreground"
                                     : "text-zinc-500/80 italic",
@@ -463,7 +473,7 @@ export default function Home() {
                             />
                           )}
                         </span>
-                        <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm max-w-xl text-wrap">
+                        <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-none min-w-0 text-wrap">
                           {message
                             .split(" ")
                             .map((word: string, index: number) => {
@@ -526,7 +536,7 @@ export default function Home() {
                     <span className="text-muted-foreground text-sm">
                       Replying to:
                     </span>
-                    <span className="bg-zinc-900 bg-opacity-60 rounded-md p-1.5 text-sm lg:max-w-xl max-w-md">
+                    <span className="bg-zinc-900 bg-opacity-60 rounded-md p-1.5 text-sm lg:max-w-xl max-w-none min-w-0">
                       {
                         getMessages?.find(({ _id }) => _id === replyingTo)
                           ?.message
