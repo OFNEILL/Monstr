@@ -2,7 +2,7 @@ import { query, mutation } from "./_generated/server";
 import { v } from "convex/values";
 
 type ConversationPreview = {
-  convesationId: string;
+  conversationId: string;
   message: string | null;
   messageId: string;
 };
@@ -137,7 +137,7 @@ export const getConversationPreviews = query({
         .take(1);
 
       const preview: ConversationPreview = {
-        convesationId: conversation._id,
+        conversationId: conversation._id,
         message: messages[0]?.message,
         messageId: messages[0]?._id,
       };
