@@ -97,6 +97,7 @@ export default function Home() {
       });
     }
   }, [getMessages, getUser, userImages, loadingImages]);
+
   return (
     <div className="flex w-full flex-col">
       <span className="flex items-center justify-between border-b border-b-zinc-900 px-4 py-3.5">
