@@ -344,7 +344,7 @@ export default function Home() {
                             return (
                               <div
                                 className={cn(
-                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-60 overflow-hidden text-ellipsis whitespace-nowrap opacity-75",
+                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-60 overflow-hidden text-ellipsis whitespace-nowrap opacity-75 select-none",
                                   message
                                     ? "text-muted-foreground"
                                     : "text-zinc-500/80 italic",
@@ -444,7 +444,7 @@ export default function Home() {
                             return (
                               <div
                                 className={cn(
-                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-60 overflow-hidden text-ellipsis whitespace-nowrap opacity-75",
+                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-60 overflow-hidden text-ellipsis whitespace-nowrap opacity-75 select-none",
                                   message
                                     ? "text-muted-foreground"
                                     : "text-zinc-500/80 italic",
