@@ -22,6 +22,7 @@ export function Sidebar({ children }: Readonly<{ children: React.ReactNode }>) {
         setCollapsed(true);
       }
     };
+    handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
