@@ -158,13 +158,17 @@ export default function Home() {
           </span>
         </span>
       </span>
-      <div className={cn("flex", "lg:h-[calc(100%-60px)] h-full")}>
+      <div
+        className={cn(
+          "flex lg:h-[calc(100%-60px)]",
+          conversationId === undefined && "h-[calc(100%-60px)]",
+          conversationId !== undefined && "h-full",
+        )}
+      >
         <div
           className={cn(
             "flex flex-col gap-4 lg:border-r lg:border-r-zinc-900 p-2 pt-0 overflow-y-auto overflow-x-hidden lg:min-w-80 lg:w-80 w-full",
             conversationId !== undefined && "hidden lg:flex",
-            conversationId === undefined && "lg:h-full h-[calc(100%-60px)]",
-            getConversations && getConversations?.length < 7 && "!h-full",
           )}
         >
           <span className="px-2 sticky pt-4 pb-2 top-0 bg-black flex flex-col gap-4">
