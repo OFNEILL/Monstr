@@ -134,7 +134,7 @@ export default function Home() {
       className={cn(
         "flex w-full flex-col",
         conversationId !== undefined &&
-          "absolute h-full bg-black sm:relative sm:bg-transparent sm:h-auto",
+          "absolute h-[100dvh] bg-black sm:relative sm:bg-transparent sm:h-auto",
       )}
     >
       <span
