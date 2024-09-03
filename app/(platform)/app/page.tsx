@@ -158,16 +158,12 @@ export default function Home() {
           </span>
         </span>
       </span>
-      <div
-        className={cn(
-          "flex h-full",
-          conversationId !== undefined && "lg:h-[calc(100%-60px)]",
-        )}
-      >
+      <div className={cn("flex", "lg:h-[calc(100%-60px)] h-full")}>
         <div
           className={cn(
-            "flex flex-col gap-4 h-full lg:border-r lg:border-r-zinc-900 p-2 pt-0 overflow-y-auto overflow-x-hidden lg:min-w-80 lg:w-80 w-full",
+            "flex flex-col gap-4 lg:border-r lg:border-r-zinc-900 p-2 pt-0 overflow-y-auto overflow-x-hidden lg:min-w-80 lg:w-80 w-full",
             conversationId !== undefined && "hidden lg:flex",
+            conversationId === undefined && "lg:h-full h-[calc(100%-60px)]",
           )}
         >
           <span className="px-2 sticky pt-4 pb-2 top-0 bg-black flex flex-col gap-4">
@@ -223,7 +219,7 @@ export default function Home() {
                       className="h-full w-full object-cover"
                     />
                   </span>
-                  <span className="w-full max-w-40 xs:max-w-72">
+                  <span className="w-full max-w-40 xs:max-w-52 md:max-w-72 lg:max-w-44">
                     <p className="font-semibold">{conversationName}</p>
                     <p
                       className={cn(
