@@ -143,7 +143,7 @@ export default function Home() {
           conversationId !== undefined && "hidden lg:flex",
         )}
       >
-        <h1 className="text-xl">All Rooms</h1>
+        <h1 className="lg:text-xl text-lg">All Rooms</h1>
         <span>
           <span
             className="flex cursor-pointer items-center gap-2 rounded-md bg-zinc-900 px-2 sm:py-1.5 py-2 text-sm hover:bg-opacity-60"
