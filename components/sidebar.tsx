@@ -8,13 +8,24 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import { SignedIn, UserButton, useUser } from "@clerk/nextjs";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 
 export function Sidebar({ children }: Readonly<{ children: React.ReactNode }>) {
   const { user } = useUser();
   const [collapsed, setCollapsed] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        setCollapsed(true);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="flex w-full h-full overflow-hidden">
