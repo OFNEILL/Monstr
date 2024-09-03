@@ -134,7 +134,7 @@ export default function Home() {
       className={cn(
         "flex w-full flex-col",
         conversationId !== undefined &&
-          "absolute h-[100dvh] bg-black sm:relative sm:bg-transparent sm:h-auto",
+          "absolute h-[100dvh] bg-black sm:relative sm:bg-transparent sm:h-screen",
       )}
     >
       <span
@@ -160,8 +160,8 @@ export default function Home() {
       </span>
       <div
         className={cn(
-          "flex",
-          conversationId !== undefined && "lg:h-[calc(100%-60px)] h-full",
+          "flex h-full",
+          conversationId !== undefined && "lg:h-[calc(100%-60px)]",
         )}
       >
         <div
