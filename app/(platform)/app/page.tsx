@@ -130,7 +130,13 @@ export default function Home() {
   }, [getConversations, conversationId, setRoom]);
 
   return (
-    <div className="flex w-full flex-col">
+    <div
+      className={cn(
+        "flex w-full flex-col",
+        conversationId !== undefined &&
+          "absolute h-full bg-black lg:relative lg:bg-transparent lg:h-auto",
+      )}
+    >
       <span
         className={cn(
           "flex items-center justify-between border-b border-b-zinc-900 px-4 py-3.5",
@@ -342,7 +348,7 @@ export default function Home() {
                             return (
                               <div
                                 className={cn(
-                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-none min-w-0 opacity-75",
+                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-64 overflow-hidden text-ellipsis whitespace-nowrap opacity-75",
                                   message
                                     ? "text-muted-foreground"
                                     : "text-zinc-500/80 italic",
@@ -356,7 +362,7 @@ export default function Home() {
                         </span>
                       )}
                       <div className="group flex flex-row-reverse items-center gap-2 w-fit">
-                        <div className="bg-blue-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-none min-w-0 text-wrap">
+                        <div className="bg-blue-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-lg min-w-0 text-wrap">
                           {message
                             .split(" ")
                             .map((word: string, index: number) => {
@@ -442,7 +448,7 @@ export default function Home() {
                             return (
                               <div
                                 className={cn(
-                                  "flex bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-none min-w-0 opacity-75",
+                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-64 overflow-hidden text-ellipsis whitespace-nowrap opacity-75",
                                   message
                                     ? "text-muted-foreground"
                                     : "text-zinc-500/80 italic",
@@ -473,7 +479,7 @@ export default function Home() {
                             />
                           )}
                         </span>
-                        <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-none min-w-0 text-wrap">
+                        <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl max-w-lg min-w-0 text-wrap">
                           {message
                             .split(" ")
                             .map((word: string, index: number) => {
@@ -536,7 +542,7 @@ export default function Home() {
                     <span className="text-muted-foreground text-sm">
                       Replying to:
                     </span>
-                    <span className="bg-zinc-900 bg-opacity-60 rounded-md p-1.5 text-sm lg:max-w-xl max-w-none min-w-0">
+                    <span className="bg-zinc-900 bg-opacity-60 rounded-md p-1.5 text-sm  lg:max-w-xl max-w-64 overflow-hidden text-ellipsis whitespace-nowrap min-w-0 text-zinc-500/90">
                       {
                         getMessages?.find(({ _id }) => _id === replyingTo)
                           ?.message
