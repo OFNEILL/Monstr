@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={cn(inter.className, "h-screen w-screen")}>
+        <body className={cn(inter.className, "h-[100dvh] w-screen")}>
           <ConvexClientProvider>
             <Sidebar>{children}</Sidebar>
           </ConvexClientProvider>
