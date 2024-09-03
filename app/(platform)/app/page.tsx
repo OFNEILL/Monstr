@@ -245,7 +245,7 @@ export default function Home() {
         </div>
         {conversationId !== undefined &&
         getConversations?.find(({ _id }) => _id === conversationId) ? (
-          <div className="flex flex-grow flex-col h-ful justify-between">
+          <div className="flex flex-grow flex-col h-full justify-between">
             <div className="flex justify-between items-center border-b border-b-zinc-900 p-2">
               <span className="flex gap-2 items-center">
                 <span className="aspect-square flex lg:hidden justify-center items-center overflow-hidden rounded-md">
