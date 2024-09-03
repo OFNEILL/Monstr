@@ -348,7 +348,7 @@ export default function Home() {
                             return (
                               <div
                                 className={cn(
-                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-52 overflow-hidden text-ellipsis whitespace-nowrap opacity-75",
+                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-60 overflow-hidden text-ellipsis whitespace-nowrap opacity-75",
                                   message
                                     ? "text-muted-foreground"
                                     : "text-zinc-500/80 italic",
@@ -362,7 +362,7 @@ export default function Home() {
                         </span>
                       )}
                       <div className="group flex flex-row-reverse items-center gap-2 w-fit">
-                        <div className="bg-blue-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-52 min-w-0 text-wrap">
+                        <div className="bg-blue-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-60 min-w-0 text-wrap">
                           {message
                             .split(" ")
                             .map((word: string, index: number) => {
@@ -385,7 +385,7 @@ export default function Home() {
                                       }
                                       target="_blank"
                                       rel="noreferrer"
-                                      className="font-semibold"
+                                      className="font-semibold text-wrap break-words"
                                     >
                                       {word}
                                     </Link>
@@ -448,7 +448,7 @@ export default function Home() {
                             return (
                               <div
                                 className={cn(
-                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-52 overflow-hidden text-ellipsis whitespace-nowrap opacity-75",
+                                  "bg-zinc-900 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-60 overflow-hidden text-ellipsis whitespace-nowrap opacity-75",
                                   message
                                     ? "text-muted-foreground"
                                     : "text-zinc-500/80 italic",
@@ -462,7 +462,7 @@ export default function Home() {
                         </span>
                       )}
                       <div className="flex items-center gap-2 group w-fit">
-                        <span className="aspect-square h-6 w-6 overflow-hidden rounded-full">
+                        <span className="aspect-square h-6 w-6 min-w-6 min-h-6 overflow-hidden rounded-full">
                           {loadingImages[userId.split("|")[1]] ? (
                             <div className="h-full w-full bg-zinc-700 animate-pulse"></div>
                           ) : (
@@ -479,7 +479,7 @@ export default function Home() {
                             />
                           )}
                         </span>
-                        <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-52 min-w-0 text-wrap">
+                        <div className="bg-zinc-600 rounded-md w-fit p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-60 min-w-0 text-wrap">
                           {message
                             .split(" ")
                             .map((word: string, index: number) => {
@@ -502,7 +502,7 @@ export default function Home() {
                                       }
                                       target="_blank"
                                       rel="noreferrer"
-                                      className="font-semibold"
+                                      className="font-semibold break-words"
                                     >
                                       {word}
                                     </Link>
@@ -542,7 +542,7 @@ export default function Home() {
                     <span className="text-muted-foreground text-sm">
                       Replying to:
                     </span>
-                    <span className="bg-zinc-900 bg-opacity-60 rounded-md p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-52 overflow-hidden text-ellipsis whitespace-nowrap min-w-0 text-zinc-500/90">
+                    <span className="bg-zinc-900 bg-opacity-60 rounded-md p-1.5 text-sm lg:max-w-xl md:max-w-lg max-w-60 overflow-hidden text-ellipsis whitespace-nowrap min-w-0 text-zinc-500/90">
                       {
                         getMessages?.find(({ _id }) => _id === replyingTo)
                           ?.message
