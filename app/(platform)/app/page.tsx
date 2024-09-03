@@ -223,7 +223,7 @@ export default function Home() {
                       className="h-full w-full object-cover"
                     />
                   </span>
-                  <span className="w-full max-w-72">
+                  <span className="w-full max-w-40 xs:max-w-72">
                     <p className="font-semibold">{conversationName}</p>
                     <p
                       className={cn(
@@ -246,9 +246,9 @@ export default function Home() {
         {conversationId !== undefined &&
         getConversations?.find(({ _id }) => _id === conversationId) ? (
           <div className="flex flex-grow flex-col h-full justify-between">
-            <div className="flex justify-between items-center border-b border-b-zinc-900 p-2">
+            <div className="flex justify-between items-center border-b border-b-zinc-900 p-2 sm:py-2.5 py-2">
               <span className="flex gap-2 items-center">
-                <span className="aspect-square flex lg:hidden justify-center items-center overflow-hidden rounded-md">
+                <span className="aspect-square flex lg:hidden justify-center items-center overflow-hidden rounded-md p-1">
                   <ArrowLeftIcon
                     size={16}
                     strokeWidth={1.5}
@@ -280,7 +280,7 @@ export default function Home() {
                       )?.conversationName
                     }
                   </span>
-                  <span className="text-xs text-zinc-500/60 lg:block hidden">
+                  <span className="text-xs text-zinc-500/60 xs:block hidden">
                     {conversationId}
                   </span>
                 </span>
