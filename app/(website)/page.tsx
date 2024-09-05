@@ -15,9 +15,12 @@ import Link from "next/link";
 
 export default function Home() {
   const movingSpanRef = useRef<HTMLSpanElement>(null);
-  const [activeLiRef, setActiveLiRef] = useState(null);
+  const [activeLiRef, setActiveLiRef] = useState<HTMLLIElement | null>(null);
 
-  const handleClick = (e, liRef) => {
+  const handleClick = (
+    e: React.MouseEvent<HTMLLIElement, MouseEvent>,
+    liRef: HTMLLIElement,
+  ) => {
     setActiveLiRef(liRef);
   };
 
@@ -35,7 +38,7 @@ export default function Home() {
   }, [activeLiRef]);
 
   useEffect(() => {
-    setActiveLiRef(document.getElementById("home"));
+    setActiveLiRef(document.getElementById("home") as HTMLLIElement);
   }, []);
 
   return (
