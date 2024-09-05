@@ -104,19 +104,19 @@ export default function Home() {
                 )}
               />
             </ul>
-            <div className="bg-white rounded-2xl text-black px-3.5 flex justify-center items-center text-sm">
-              <SignedOut>
+            <SignedOut>
+              <div className="bg-white rounded-2xl text-black px-3.5 flex justify-center items-center text-sm">
                 <SignInButton />
-              </SignedOut>
-              <SignedIn>
-                <Link
-                  href="/app"
-                  className="w-full h-full flex justify-center items-center"
-                >
-                  Go to App
-                </Link>
-              </SignedIn>
-            </div>
+              </div>
+            </SignedOut>
+            <SignedIn>
+              <Link
+                href="/app"
+                className="bg-white rounded-2xl text-black px-3.5 flex justify-center items-center text-sm"
+              >
+                Go to App
+              </Link>
+            </SignedIn>
           </div>
         </div>
 
