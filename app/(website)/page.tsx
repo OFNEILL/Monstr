@@ -4,22 +4,16 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { SparklesIcon } from "lucide-react";
-import {
-  ClerkProvider,
-  SignInButton,
-  SignedIn,
-  SignedOut,
-  UserButton,
-} from "@clerk/nextjs";
+import { SignInButton, SignedIn, SignedOut } from "@clerk/nextjs";
 import Link from "next/link";
 
 export default function Home() {
   const movingSpanRef = useRef<HTMLSpanElement>(null);
-  const [activeLiRef, setActiveLiRef] = useState<HTMLLIElement | null>(null);
+  const [activeLiRef, setActiveLiRef] = useState(null);
 
   const handleClick = (
     e: React.MouseEvent<HTMLLIElement, MouseEvent>,
-    liRef: HTMLLIElement,
+    liRef: any,
   ) => {
     setActiveLiRef(liRef);
   };
@@ -38,7 +32,7 @@ export default function Home() {
   }, [activeLiRef]);
 
   useEffect(() => {
-    setActiveLiRef(document.getElementById("home") as HTMLLIElement);
+    setActiveLiRef(document.getElementById("home") as any);
   }, []);
 
   return (
