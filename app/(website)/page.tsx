@@ -49,8 +49,8 @@ export default function Home() {
       </svg>
 
       <div className="h-full w-full max-w-screen-xl flex flex-col justify-self-center gap-14">
-        <div className="flex justify-center items-center w-full sticky top-2">
-          <div className="p-1.5 bg-zinc-900 rounded-3xl border border-zinc-800 w-fit flex gap-14 select-none">
+        <div className="flex justify-center items-center w-full sticky top-2 z-20">
+          <div className="p-1.5 bg-zinc-900 rounded-3xl border border-zinc-800 bg-opacity-65 w-fit flex gap-14 select-none">
             <div className="flex gap-2 justify-center items-center">
               <span className="overflow-hidden w-8 aspect-square rounded-full">
                 <Image
@@ -120,25 +120,42 @@ export default function Home() {
           </div>
         </div>
 
-        <div className="flex flex-col w-full gap-10 items-center z-10">
-          <span className="flex items-center justify-center bg-zinc-900 rounded-3xl border border-zinc-800 w-fit px-2 text-sm">
+        <div className="flex flex-col w-full gap-10 items-center z-10 max-h-[calc(100dvh-102px)]">
+          <span className="flex items-center justify-center bg-zinc-900 rounded-3xl border border-zinc-800 w-fit text-xs font-semibold px-2.5 py-0.5">
             <SparklesIcon className="w-4 h-4 mr-2" />
             Under construction
           </span>
-          <div className="flex w-full justify-between">
-            <div className="text-8xl">
-              Place for <br /> monsers and <br /> humans alike.
-            </div>
-            <div className="flex-grow">
-              <div className="w-full aspect-auto">
+          <div className="flex w-full justify-between flex-col gap-36">
+            <span className="flex justify-center items-center flex-col gap-10">
+              <div className="text-6xl text-center">
+                Place for monsers <br /> and humans alike.
+              </div>
+              <p className="text-center text-zinc-400 opacity-85">
+                Monstr is a web-based chat application that allows users to{" "}
+                <br /> create and join disposable chat rooms.
+              </p>
+            </span>
+            <div className="flex-grow flex justify-center flex-row-reverse gap-24">
+              <span className="-mt-10">
+                <div className="w-full aspect-auto max-w-56 rotate-12">
+                  <Image
+                    src="/monstr-chat.png"
+                    alt="Monstr logo"
+                    width={0}
+                    height={0}
+                    sizes="100vw"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              </span>
+              <div className="w-full aspect-auto max-w-56 -rotate-12">
                 <Image
-                  src="/555f87795345903927ab2b2603a20fa0.png"
+                  src="/monstr-home.png"
                   alt="Monstr logo"
                   width={0}
                   height={0}
                   sizes="100vw"
-                  objectFit="cover"
-                  className="w-full h-full"
+                  className="w-full h-full object-cover"
                 />
               </div>
             </div>
@@ -146,6 +163,7 @@ export default function Home() {
         </div>
 
         <div className="w-96 h-72 rounded-full bg-[#d3f806] absolute blur-[150px] opacity-95 top-15/100 -left-50/100" />
+        <div className="w-96 h-72 rounded-full bg-[#022fe8] absolute blur-[150px] opacity-95 top-28 left-52" />
       </div>
     </div>
   );
