@@ -128,7 +128,7 @@ export default function Home() {
           <div className="flex w-full justify-between flex-col gap-36">
             <span className="flex justify-center items-center flex-col gap-10">
               <div className="text-6xl text-center">
-                Place for monsers <br /> and humans alike.
+                A place for Monsters <br /> and Humans alike.
               </div>
               <p className="text-center text-zinc-400 opacity-85">
                 Monstr is a web-based chat application that allows users to{" "}
